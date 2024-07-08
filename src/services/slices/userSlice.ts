@@ -1,3 +1,6 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { TOrder, TUser } from '../../utils/types';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 import {
   TLoginData,
   TRegisterData,
@@ -7,10 +10,7 @@ import {
   logoutApi,
   registerUserApi,
   updateUserApi
-} from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TOrder, TUser } from '../../utils/types';
-import { deleteCookie, setCookie } from '../../utils/cookie';
+} from '../../utils/burger-api';
 
 export interface UserState {
   isAuthenticated: boolean;
@@ -21,7 +21,7 @@ export interface UserState {
   error: string | null;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   isAuthenticated: false,
   loginUserRequest: false,
   user: null,
@@ -50,21 +50,6 @@ export const logoutUserThunk = createAsyncThunk('user/logout', async () =>
 export const getUserThunk = createAsyncThunk('user/getUser', async () =>
   getUserApi()
 );
-
-// todo: remove try{}, catch{}
-// export const registerUserThunk = createAsyncThunk()
-//   'authorization/register',
-//   async (data: TRegisterData, { rejectWithValue }) => {
-//     try {
-//       const result = await registerUserApi(data);
-//       setCookie('accessToken', result.accessToken);
-//       localStorage.setItem('refreshToken', result.refreshToken);
-//       return result.user;
-//     } catch (error) {
-//       return rejectWithValue(error as string);
-//     }
-//   }
-// );
 
 export const registerUserThunk = createAsyncThunk(
   'authorization/register',
@@ -95,7 +80,7 @@ const userSlice = createSlice({
     userEmailSelector: (state) => state.user?.email || '',
     userSelector: (state) => state.user,
     userOrdersSelector: (state) => state.orders,
-    ordersRequestSelector: (state) => state.orders,
+    ordersRequestSelector: (state) => state.ordersRequest,
     errorSelector: (state) => state.error
   },
   reducers: {

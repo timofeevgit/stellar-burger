@@ -1,3 +1,5 @@
+const testUrl = 'http://localhost:4000';
+
 describe('Секция оформления заказа', () => {
   beforeEach(() => {
     cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
@@ -5,7 +7,7 @@ describe('Секция оформления заказа', () => {
       'login'
     );
     cy.intercept('POST', '/api/orders', { fixture: 'order.json' }).as('order');
-    cy.visit('http://localhost:4000');
+    cy.visit(testUrl);
     window.localStorage.setItem('refreshToken', JSON.stringify('test-refreshToken'));
     cy.setCookie('accessToken', 'test-accessToken');
   });
@@ -15,12 +17,12 @@ describe('Секция оформления заказа', () => {
   })
 
   it('Оформление заказа', () => {
-    cy.get('[data-cy=ingredient-1').within(() => {
+    cy.get('[data-cy=ingredient-1]').within(() => {
       cy.get('button').click();
     });
     cy.log('Добавили булки');
 
-    cy.get('[data-cy=ingredient-2').within(() => {
+    cy.get('[data-cy=ingredient-2]').within(() => {
       cy.get('button').click();
     });
     cy.log('Добавили ингредиент');
@@ -50,7 +52,7 @@ describe('Секция добавления ингредиентов в конс
   beforeEach(function () {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
     cy.viewport(1300, 800);
-    cy.visit('http://localhost:4000');
+    cy.visit(testUrl);
   });
 
   it('Должна добавиться булка', function () {
@@ -62,7 +64,8 @@ describe('Секция добавления ингредиентов в конс
     cy.get('[data-cy="bun-top"]')
       .should('exist')
       .within(() => {
-        cy.get('.constructor-element__text').should(
+        cy.get('.constructor-element__text').as('constructorElementText')
+        cy.get('@constructorElementText').should(
           'contain',
           'Ингредиент 1 (верх)'
         );
@@ -72,7 +75,8 @@ describe('Секция добавления ингредиентов в конс
     cy.get('[data-cy="bun-bottom"]')
       .should('exist')
       .within(() => {
-        cy.get('.constructor-element__text').should(
+        cy.get('.constructor-element__text').as('constructorElementText')
+        cy.get('@constructorElementText').should(
           'contain',
           'Ингредиент 1 (низ)'
         );
@@ -80,19 +84,22 @@ describe('Секция добавления ингредиентов в конс
   });
 
   it('Должны добавиться ингредиенты', () => {
-    cy.get('[data-cy=ingredient-5').within(() => {
+    cy.get('[data-cy=ingredient-5]').as('ingredient-5')
+    cy.get('@ingredient-5').within(() => {
       cy.get('button').click();
     });
-
+    
     cy.get('[data-cy="bun-ingredient-5"]')
       .should('exist')
       .within(() => {
-        cy.get('.constructor-element__text').should('contain', 'Ингредиент 5');
+        cy.get('.constructor-element__text').as('constructorElementText')
+        cy.get('@constructorElementText').should('contain', 'Ингредиент 5');
       });
   });
 
   it('Нажатие на крестик приводит к закрытию модального окна ингредиента', () => {
-    cy.get('[data-cy=ingredient-5').click();
+    cy.get('[data-cy=ingredient-5]').as('ingredient-5')
+    cy.get('@ingredient-5').click();
     cy.get('[data-cy="Modal"]')
       .should('exist')
       .within(() => {
@@ -104,7 +111,8 @@ describe('Секция добавления ингредиентов в конс
   });
 
   it('Нажатие на оверлей приводит к закрытию модального окна ингредиента', () => {
-    cy.get('[data-cy=ingredient-5').click();
+    cy.get('[data-cy=ingredient-5]').as('ingredient-5')
+    cy.get('@ingredient-5').click();
     cy.get('[data-cy="Modal"]').should('exist');
 
     cy.get('[data-cy="modalOverlay"]').click('top', { force: true });

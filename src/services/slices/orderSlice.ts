@@ -9,7 +9,7 @@ export interface OrderState {
   error: string | null;
 }
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   order: null,
   isOrderLoading: false,
   error: null
@@ -20,7 +20,7 @@ export const postOrderBurgerThunk = createAsyncThunk(
   async (data: string[]) => orderBurgerApi(data)
 );
 
-const orderSlice = createSlice({
+export const orderSlice = createSlice({
   name: 'order',
   initialState,
   selectors: {

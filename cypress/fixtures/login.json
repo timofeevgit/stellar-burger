@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "cypress access token test",
+  "refreshToken": "cypress refresh token test",
+  "user": {
+      "email": "dtimof@yandex.ru",
+      "name": "D Timofeev"
+  }
+}

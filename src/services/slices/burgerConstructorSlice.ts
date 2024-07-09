@@ -10,7 +10,7 @@ export interface burgerConstructorState {
   error: string | null;
 }
 
-const initialState: burgerConstructorState = {
+export const initialState: burgerConstructorState = {
   burgerConstructor: {
     bun: null,
     ingredients: []
@@ -22,7 +22,8 @@ const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   selectors: {
-    burgerConstructorSelector: (state) => state.burgerConstructor
+    burgerConstructorSelector: (state: burgerConstructorState) =>
+      state.burgerConstructor
   },
   reducers: {
     addIngredient: {
